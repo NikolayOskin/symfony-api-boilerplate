@@ -99,6 +99,9 @@
     "psr/log": {
         "version": "1.1.2"
     },
+    "symfony-bundles/json-request-bundle": {
+        "version": "v2.0.1"
+    },
     "symfony/cache": {
         "version": "v4.4.2"
     },
@@ -194,6 +197,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/messenger": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "8a2675c061737658bed85102e9241c752620e575"
+        },
+        "files": [
+            "./config/packages/messenger.yaml"
+        ]
     },
     "symfony/mime": {
         "version": "v4.4.2"
