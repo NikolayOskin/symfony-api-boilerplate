@@ -59,7 +59,7 @@ class User
         return $this->email;
     }
 
-    public function getConfirmToken(): ?string
+    public function getConfirmToken(): ?ConfirmToken
     {
         return $this->confirmToken;
     }
@@ -67,5 +67,25 @@ class User
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function isWait(): bool
+    {
+        return $this->status === self::STATUS_WAIT;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function confirmSignUp(string $token, \DateTimeImmutable $dateTime) : void
+    {
+        if ($this->isActive()) {
+            throw new \DomainException('User is already active.');
+        }
+        $this->confirmToken->validate($token, $dateTime);
+        $this->status = self::STATUS_ACTIVE;
+        $this->confirmToken = null;
     }
 }

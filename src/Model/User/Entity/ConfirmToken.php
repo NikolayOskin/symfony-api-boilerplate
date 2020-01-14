@@ -20,14 +20,30 @@ class ConfirmToken
         $this->expireDate = $expireDate;
     }
 
-    public function isExpired() : bool
+    public function validate(string $token, \DateTimeImmutable $dateTime)
     {
-        $now = new \DateTimeImmutable();
-        return $now >= $this->expireDate;
+        if ($this->isExpired($dateTime)) {
+            throw new \DomainException('Token is already expired');
+        }
+        if (!$this->isEqualTo($token)) {
+            throw new \DomainException('Token is invalid');
+        }
     }
 
-    public function getToken()
+    public function isEqualTo(string $token) : bool
+    {
+        return $this->token === $token;
+    }
+
+    public function isExpired(\DateTimeImmutable $dateTime) : bool
+    {
+        return $dateTime >= $this->expireDate;
+    }
+
+    public function getToken(): string
     {
         return $this->token;
     }
+
+
 }
