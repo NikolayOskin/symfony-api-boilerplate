@@ -11,13 +11,16 @@
         "symfony/dotenv": "4.4.*",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "4.4.*",
+        "symfony/mailer": "4.4.*",
         "symfony/messenger": "4.4.*",
         "symfony/orm-pack": "^1.0",
+        "symfony/validator": "4.4.*",
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.14",
-        "symfony/phpunit-bridge": "^5.0"
+        "symfony/phpunit-bridge": "^5.0",
+        "symfony/test-pack": "^1.0"
     },
     "config": {
         "preferred-install": {
@@ -62,6 +65,12 @@
         "symfony": {
             "allow-contrib": false,
             "require": "4.4.*"
+        }
+    },
+    "repositories": {
+        "phpunit-bridge": {
+            "type": "path",
+            "url": "/var/www/api/vendor/symfony/phpunit-bridge"
         }
     }
 }
