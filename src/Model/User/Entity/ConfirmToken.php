@@ -4,11 +4,12 @@ namespace App\Model\User\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
+use Webmozart\Assert\Assert;
 
 /** @Embeddable */
 class ConfirmToken
 {
-    /** @Column(type = "string") */
+    /** @Column(type = "string", nullable=true) */
     private $token;
 
     /** @Column(type = "datetime_immutable", nullable=true) */
@@ -16,6 +17,7 @@ class ConfirmToken
 
     public function __construct(string $token, \DateTimeImmutable $expireDate)
     {
+        Assert::notEmpty($token);
         $this->token = $token;
         $this->expireDate = $expireDate;
     }

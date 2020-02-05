@@ -4,6 +4,7 @@ namespace App\Model\User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Embedded;
+use Webmozart\Assert\Assert;
 
 /**
  * @ORM\Entity
@@ -18,8 +19,8 @@ class User
 
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="string", length=128)
      */
     private $id;
 
@@ -41,12 +42,31 @@ class User
      */
     private $status;
 
-    public function __construct(string $email, string $passwordHash, ConfirmToken $confirmToken)
-    {
-        $this->email = $email;
+    /**
+     * @ORM\Column(type="datetime", name="created_at", nullable=false)
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", name="updated_at", nullable=false)
+     */
+    private $updatedAt;
+
+    public function __construct(
+        UserId $userId,
+        Email $email,
+        string $passwordHash,
+        ConfirmToken $confirmToken
+    ) {
+        Assert::notEmpty($email);
+        Assert::notEmpty($passwordHash);
+        $this->id = $userId->asString();
+        $this->email = $email->asString();
         $this->passwordHash = $passwordHash;
         $this->confirmToken = $confirmToken;
         $this->status = self::STATUS_WAIT;
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
