@@ -20,6 +20,8 @@
         "webmozart/assert": "^1.6"
     },
     "require-dev": {
+        "ext-json": "*",
+        "dama/doctrine-test-bundle": "^6.3",
         "symfony/maker-bundle": "^1.14",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/test-pack": "^1.0"
