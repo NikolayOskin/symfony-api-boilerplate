@@ -1,3 +1,8 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+#api.registration:
+#    path: /api/register
+#    controller: App\Controller\Auth\SignUpController::index
+#    methods: POST
+#api.confirm:
+#    path: /api/confirm-registration
+#    controller: App\Controller\Auth\ConfirmRegistrationController::index
+#    methods: POST
