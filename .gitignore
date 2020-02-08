@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -10,6 +9,8 @@
 /vendor/
 /mysql
 .idea
+/bin/*
+!bin/console
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
