@@ -8,6 +8,7 @@ use App\Model\User\UseCase\ConfirmSignUp\ConfirmSignUpHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ConfirmRegistrationController extends AbstractController
@@ -18,17 +19,17 @@ class ConfirmRegistrationController extends AbstractController
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param ConfirmSignUpHandler $handler
+     * @param SerializerInterface $serializer
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function index(
         Request $request,
         ValidatorInterface $validator,
-        ConfirmSignUpHandler $handler
+        ConfirmSignUpHandler $handler,
+        SerializerInterface $serializer
     ) {
-        $command = new ConfirmSignUpCommand(
-            $request->get('email') ?? '',
-            $request->get('confirmToken') ?? ''
-        );
+        $command = $serializer->deserialize($request->getContent(), ConfirmSignUpCommand::class, 'json');
+
         $errors = $validator->validate($command);
 
         if (count($errors) > 0) {

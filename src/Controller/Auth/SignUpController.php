@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SignUpController extends AbstractController
@@ -19,17 +20,17 @@ class SignUpController extends AbstractController
      * @param SignUpHandler $handler
      * @param Request $request
      * @param ValidatorInterface $validator
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
     public function index(
         SignUpHandler $handler,
         Request $request,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SerializerInterface $serializer
     ) : JsonResponse {
-        $command = new SignUpCommand(
-            $request->get('email') ?? '',
-            $request->get('password') ?? ''
-        );
+
+        $command = $serializer->deserialize($request->getContent(), SignUpCommand::class, 'json');
 
         $errors = $validator->validate($command);
 

@@ -15,10 +15,4 @@ class ConfirmSignUpCommand
      * @Assert\NotBlank
      */
     public $confirmToken;
-
-    public function __construct(string $email, string $confirmToken)
-    {
-        $this->email = $email;
-        $this->confirmToken = $confirmToken;
-    }
 }
