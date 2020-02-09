@@ -27,10 +27,12 @@ class ConfirmSignUpHandler
     public function handle(ConfirmSignUpCommand $command) : void
     {
         $user = $this->repo->getByEmail($command->email);
+        if (!$user) {
+            throw new \DomainException('User not found.');
+        }
 
         $user->confirmSignUp($command->confirmToken, new \DateTimeImmutable());
 
-        $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
 
