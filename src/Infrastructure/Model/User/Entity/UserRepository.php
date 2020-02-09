@@ -3,9 +3,8 @@
 namespace App\Infrastructure\Model\User\Entity;
 
 use App\Model\User\Entity\User;
-use App\Model\User\Service\UserRepositoryInterface;
+use App\Model\User\Entity\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -28,7 +27,7 @@ class UserRepository implements UserRepositoryInterface
     public function getByEmail(string $email): User
     {
         if (!$user = $this->repo->findOneBy(['email' => $email])) {
-            throw new EntityNotFoundException('User is not found.');
+            throw new \DomainException('User is not found.');
         }
         return $user;
     }
