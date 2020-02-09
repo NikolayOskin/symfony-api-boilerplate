@@ -30,5 +30,5 @@ createdb:
 	docker-compose run --rm php-fpm php bin/console doctrine:database:create --env=test --no-interaction
 
 run-tests:
-	#docker-compose run --rm php-fpm php bin/console doctrine:fixtures:load --env=test --no-interaction
+	docker-compose run --rm php-fpm php bin/console doctrine:fixtures:load --env=test --no-interaction
 	docker-compose run --rm php-fpm php bin/phpunit

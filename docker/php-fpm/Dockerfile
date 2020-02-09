@@ -1,6 +1,11 @@
 FROM php:7.4-fpm-alpine
 
-RUN apk update && apk add unzip && docker-php-ext-install pdo pdo_mysql
+RUN set -ex \
+    && apk update && apk add unzip \
+	&& apk --no-cache add postgresql-libs postgresql-dev \
+	&& docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+	&& docker-php-ext-install pgsql pdo_pgsql \
+	&& apk del postgresql-dev
 
 RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/bin --filename=composer --quiet
 
