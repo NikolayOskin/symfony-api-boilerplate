@@ -5,7 +5,7 @@ namespace App\Model\User\UseCase\SignUp;
 use App\Infrastructure\Model\User\Entity\UserRepository;
 use App\Infrastructure\Model\User\Messages\RegistrationEmailNotification;
 use App\Infrastructure\Model\User\Service\PasswordHasher;
-use App\Infrastructure\Model\User\Service\TokenGenerator;
+use App\Infrastructure\Model\User\Service\ConfirmTokenGenerator;
 use App\Model\User\Entity\Email;
 use App\Model\User\Entity\User;
 use App\Model\User\Entity\UserId;
@@ -19,7 +19,7 @@ class SignUpHandler
      */
     private $hasher;
     /**
-     * @var TokenGenerator
+     * @var ConfirmTokenGenerator
      */
     private $tokenizer;
     /**
@@ -37,7 +37,7 @@ class SignUpHandler
 
     public function __construct(
         PasswordHasher $hasher,
-        TokenGenerator $tokenizer,
+        ConfirmTokenGenerator $tokenizer,
         EntityManagerInterface $entityManager,
         UserRepository $users,
         MessageBusInterface $bus

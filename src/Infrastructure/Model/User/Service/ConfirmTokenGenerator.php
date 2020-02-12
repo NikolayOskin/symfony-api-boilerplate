@@ -4,7 +4,7 @@ namespace App\Infrastructure\Model\User\Service;
 
 use App\Model\User\Entity\ConfirmToken;
 
-class TokenGenerator
+class ConfirmTokenGenerator
 {
     public function generate() : ConfirmToken
     {
