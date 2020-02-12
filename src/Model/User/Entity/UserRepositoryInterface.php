@@ -4,7 +4,7 @@ namespace App\Model\User\Entity;
 
 interface UserRepositoryInterface
 {
-    public function hasByEmail(string $email) : bool;
+    public function hasByEmail(Email $email) : bool;
 
-    public function getByEmail(string $email) : User;
+    public function getByEmail(Email $email) : User;
 }

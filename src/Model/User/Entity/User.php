@@ -69,7 +69,7 @@ class User
         $this->updatedAt = new \DateTimeImmutable();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -97,6 +97,11 @@ class User
     public function isActive(): bool
     {
         return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function getPasswordHash(): string
+    {
+        return $this->passwordHash;
     }
 
     public function confirmSignUp(string $token, \DateTimeImmutable $dateTime) : void
