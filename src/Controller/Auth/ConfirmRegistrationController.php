@@ -28,6 +28,7 @@ class ConfirmRegistrationController extends AbstractController
         ConfirmSignUpHandler $handler,
         SerializerInterface $serializer
     ) {
+        /** @var ConfirmSignUpCommand $command */
         $command = $serializer->deserialize($request->getContent(), ConfirmSignUpCommand::class, 'json');
 
         $errors = $validator->validate($command);
