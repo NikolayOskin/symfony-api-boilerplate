@@ -8,6 +8,7 @@
 /var/
 /vendor/
 /mysql
+/postgres
 .idea
 /bin/*
 !bin/console
