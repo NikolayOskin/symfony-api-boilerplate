@@ -3,6 +3,7 @@ down: docker-down
 restart: down up
 init: docker-down-clear docker-pull docker-build up init-db
 test: run-tests
+unit-tests: run-tests-unit
 init-db: dropdb createdb migrate
 
 docker-up:
@@ -32,3 +33,6 @@ createdb:
 run-tests:
 	docker-compose run --rm php-fpm php bin/console doctrine:fixtures:load --env=test --no-interaction
 	docker-compose run --rm php-fpm php bin/phpunit
+
+run-tests-unit:
+	docker-compose run --rm php-fpm php bin/phpunit --testsuite=unit
