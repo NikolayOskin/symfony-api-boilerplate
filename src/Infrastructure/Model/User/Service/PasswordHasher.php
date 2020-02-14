@@ -14,12 +14,17 @@ class PasswordHasher
         $this->cost = $cost;
     }
 
-    public function hash(string $password)
+    public function hash(string $password) : string
     {
         $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => $this->cost]);
         if ($hash === false) {
             throw new \RuntimeException('Unable to generate hash.');
         }
         return $hash;
+    }
+
+    public function isValid(string $password, string $hash) : bool
+    {
+        return password_verify($password, $hash);
     }
 }
