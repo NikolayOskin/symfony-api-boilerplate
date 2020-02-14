@@ -51,7 +51,7 @@ class SignUpHandler
 
     public function handle(SignUpCommand $command) : void
     {
-        if ($this->users->hasByEmail($command->email)) {
+        if ($this->users->hasByEmail(Email::createFromString($command->email))) {
             throw new \DomainException('User with this email already exists.');
         }
         $user = new User(

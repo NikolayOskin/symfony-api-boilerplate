@@ -2,6 +2,7 @@
 
 namespace App\Model\User\UseCase\ConfirmSignUp;
 
+use App\Model\User\Entity\Email;
 use App\Model\User\Entity\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -26,7 +27,7 @@ class ConfirmSignUpHandler
 
     public function handle(ConfirmSignUpCommand $command) : void
     {
-        $user = $this->repo->getByEmail($command->email);
+        $user = $this->repo->getByEmail(Email::createFromString($command->email));
         if (!$user) {
             throw new \DomainException('User not found.');
         }
