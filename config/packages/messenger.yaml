@@ -10,3 +10,4 @@ framework:
 
         routing:
             'App\Infrastructure\Model\User\Messages\RegistrationEmailNotification': async
+            'App\Infrastructure\Model\Auth\Messages\ResetPassword\ResetPasswordEmailNotification': async

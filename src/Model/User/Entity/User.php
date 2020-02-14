@@ -34,12 +34,12 @@ class User implements UserInterface
     private $confirmToken;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, name="password_hash")
+     * @ORM\Column(type="string", length=120, nullable=false, name="password_hash")
      */
     private $passwordHash;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false, name="status")
+     * @ORM\Column(type="string", length=10, nullable=false, name="status")
      */
     private $status;
 
@@ -52,6 +52,9 @@ class User implements UserInterface
      * @ORM\Column(type="datetime", name="updated_at", nullable=false)
      */
     private $updatedAt;
+
+    /** @Embedded(class = "ResetPasswordToken") */
+    private $resetPasswordToken = null;
 
     private $roles = [];
 
@@ -137,5 +140,15 @@ class User implements UserInterface
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    public function setResetPasswordToken(ResetPasswordToken $token) : void
+    {
+        $this->resetPasswordToken = $token;
+    }
+
+    public function getResetPasswordToken(): ?ResetPasswordToken
+    {
+        return $this->resetPasswordToken;
     }
 }
