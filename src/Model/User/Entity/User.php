@@ -4,6 +4,7 @@ namespace App\Model\User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Embedded;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -12,7 +13,7 @@ use Webmozart\Assert\Assert;
  *     @ORM\UniqueConstraint(columns={"email"})
  * })
  */
-class User
+class User implements UserInterface
 {
     private const STATUS_WAIT = 'wait';
     private const STATUS_ACTIVE = 'active';
@@ -51,6 +52,8 @@ class User
      * @ORM\Column(type="datetime", name="updated_at", nullable=false)
      */
     private $updatedAt;
+
+    private $roles = [];
 
     public function __construct(
         UserId $userId,
@@ -112,5 +115,27 @@ class User
         $this->confirmToken->validate($token, $dateTime);
         $this->status = self::STATUS_ACTIVE;
         $this->confirmToken = null;
+    }
+
+    public function getSalt()
+    {
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function getPassword()
+    {
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }

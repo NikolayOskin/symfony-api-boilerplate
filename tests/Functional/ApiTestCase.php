@@ -10,7 +10,7 @@ class ApiTestCase extends WebTestCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser
      */
-    private $client;
+    protected $client;
     /**
      * @var object|null
      */
