@@ -6,7 +6,7 @@ namespace App\Tests\Functional\Auth;
 
 use App\Tests\Functional\ApiTestCase;
 
-class SignInTest extends ApiTestCase
+class SignInControllerTest extends ApiTestCase
 {
     private const URI = '/api/auth/signin';
 

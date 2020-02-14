@@ -4,7 +4,7 @@ namespace App\Tests\Functional\Auth;
 
 use App\Tests\Functional\ApiTestCase;
 
-class ConfirmTest extends ApiTestCase
+class ConfirmRegistrationControllerTest extends ApiTestCase
 {
     private const URI = '/api/auth/confirm';
 
