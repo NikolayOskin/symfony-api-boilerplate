@@ -10,6 +10,7 @@ use App\Model\User\UseCase\ResetPassword\CreateNewPasswordHandler;
 use App\Model\User\UseCase\ResetPassword\ResetPasswordCommand;
 use App\Model\User\UseCase\ResetPassword\ResetPasswordHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -28,24 +29,24 @@ class ResetPasswordController extends AbstractController
 
     public function __construct(ValidatorInterface $validator, SerializerInterface $serializer)
     {
-
         $this->validator = $validator;
         $this->serializer = $serializer;
     }
 
     /**
      * @Route("/auth/reset-password", name="auth.reset", methods={"POST"})
+     * @param Request $request
+     * @param ResetPasswordHandler $handler
+     * @return JsonResponse
      */
     public function reset(Request $request, ResetPasswordHandler $handler)
     {
         /*  @var $command ResetPasswordCommand */
         $command = $this->serializer->deserialize($request->getContent(), ResetPasswordCommand::class, 'json');
-
         $errors = $this->validator->validate($command);
 
         if (count($errors) > 0) {
-            $errors = new ValidationErrors($errors);
-            return $this->json(['errors' => $errors->toArray()], 422);
+            return $this->json(['errors' => (new ValidationErrors($errors))->toArray()], 422);
         }
 
         $handler->handle($command);
@@ -54,20 +55,24 @@ class ResetPasswordController extends AbstractController
 
     }
 
+    /**
+     * @Route("/auth/new-password", name="auth.new-password", methods={"POST"})
+     * @param Request $request
+     * @param CreateNewPasswordHandler $handler
+     * @return JsonResponse
+     */
     public function confirm(Request $request, CreateNewPasswordHandler $handler)
     {
+        /*  @var $command CreateNewPasswordCommand */
         $command = $this->serializer->deserialize($request->getContent(), CreateNewPasswordCommand::class, 'json');
-
         $errors = $this->validator->validate($command);
 
         if (count($errors) > 0) {
-            $errors = new ValidationErrors($errors);
-            return $this->json(['errors' => $errors->toArray()], 422);
+            return $this->json(['errors' => (new ValidationErrors($errors))->toArray()], 422);
         }
 
         $handler->handle($command);
 
-        return $this->json(['success' => 'Confirmation email is sent'], 200);
-
+        return $this->json(['success' => 'Password is changed'], 200);
     }
 }

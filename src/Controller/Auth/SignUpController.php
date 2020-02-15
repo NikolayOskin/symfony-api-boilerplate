@@ -6,6 +6,7 @@ use App\Infrastructure\Validation\ValidationErrors;
 use App\Model\User\UseCase\SignUp\SignUpCommand;
 use App\Model\User\UseCase\SignUp\SignUpHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -20,7 +21,7 @@ class SignUpController extends AbstractController
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param SerializerInterface $serializer
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function index(
         SignUpHandler $handler,
@@ -30,12 +31,10 @@ class SignUpController extends AbstractController
     ) {
         /** @var SignUpCommand $command */
         $command = $serializer->deserialize($request->getContent(), SignUpCommand::class, 'json');
-
         $errors = $validator->validate($command);
 
         if (count($errors) > 0) {
-            $errors = new ValidationErrors($errors);
-            return $this->json(['errors' => $errors->toArray()], 422);
+            return $this->json(['errors' => (new ValidationErrors($errors))->toArray()], 422);
         }
 
         $handler->handle($command);

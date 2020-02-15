@@ -8,6 +8,7 @@ use App\Infrastructure\Validation\ValidationErrors;
 use App\Model\User\UseCase\SignIn\SignInCommand;
 use App\Model\User\UseCase\SignIn\SignInHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -22,7 +23,7 @@ class SignInController extends AbstractController
      * @param SerializerInterface $serializer
      * @param SignInHandler $handler
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function index(
         ValidatorInterface $validator,
@@ -32,12 +33,10 @@ class SignInController extends AbstractController
     ) {
         /** @var SignInCommand $command */
         $command = $serializer->deserialize($request->getContent(), SignInCommand::class, 'json');
-
         $errors = $validator->validate($command);
 
         if (count($errors) > 0) {
-            $errors = new ValidationErrors($errors);
-            return $this->json(['errors' => $errors->toArray()], 422);
+            return $this->json(['errors' => (new ValidationErrors($errors))->toArray()], 422);
         }
 
         $token = $handler->handle($command);
