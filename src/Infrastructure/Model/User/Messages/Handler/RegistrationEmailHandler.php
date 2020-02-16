@@ -24,8 +24,8 @@ class RegistrationEmailHandler implements MessageHandlerInterface
         $email = (new Email())
             ->from('hello@example.com')
             ->to($notification->getEmail())
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!');
+            ->subject('Welcome!')
+            ->text('Thanks for registration in our service. Please verify your email with this token: ' . $notification->getConfirmToken()->getToken());
 
         $this->mailer->send($email);
 
