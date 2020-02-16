@@ -9,7 +9,7 @@ use Webmozart\Assert\Assert;
 /** @Embeddable */
 class ConfirmToken
 {
-    /** @Column(type = "string", nullable=true) */
+    /** @Column(type = "string", length=80, nullable=true) */
     private $token;
 
     /** @Column(type = "datetime_immutable", nullable=true) */
