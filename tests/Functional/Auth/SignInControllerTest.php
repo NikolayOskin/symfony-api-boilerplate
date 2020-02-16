@@ -20,6 +20,7 @@ class SignInControllerTest extends ApiTestCase
         $this->assertJson($response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('access_token', json_decode($response->getContent(), true));
+        $this->assertArrayHasKey('refresh_token', json_decode($response->getContent(), true));
     }
 
     public function test_invalid_credentials()

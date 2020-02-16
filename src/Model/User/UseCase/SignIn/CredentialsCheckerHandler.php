@@ -9,7 +9,7 @@ use App\Infrastructure\Model\User\Entity\UserRepository;
 use App\Infrastructure\Model\User\Service\PasswordHasher;
 use App\Model\User\Entity\Email;
 
-class SignInHandler
+class CredentialsCheckerHandler
 {
     private $tokenRepository;
     private $userRepository;
@@ -28,7 +28,7 @@ class SignInHandler
         $this->hasher = $hasher;
     }
 
-    public function handle(SignInCommand $command) : string
+    public function handle(CredentialsCheckerCommand $command) : void
     {
         if (!$user = $this->userRepository->getByEmail(Email::createFromString($command->email))) {
             throw new \DomainException("Invalid credentials");
@@ -36,7 +36,5 @@ class SignInHandler
         if (!$this->hasher->isValid($command->password, $user->getPasswordHash())) {
             throw new \DomainException("Invalid credentials");
         }
-
-        return $this->tokenRepository->generate($user->getId());
     }
 }

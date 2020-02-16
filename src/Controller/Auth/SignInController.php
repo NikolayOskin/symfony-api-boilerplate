@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
+use App\Infrastructure\Model\User\Entity\UserRepository;
 use App\Infrastructure\Validation\ValidationErrors;
-use App\Model\User\UseCase\SignIn\SignInCommand;
-use App\Model\User\UseCase\SignIn\SignInHandler;
+use App\Model\Auth\UseCase\GenerateAuthTokens\AuthTokensProvider;
+use App\Model\User\Entity\Email;
+use App\Model\User\UseCase\SignIn\CredentialsCheckerCommand;
+use App\Model\User\UseCase\SignIn\CredentialsCheckerHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,27 +24,31 @@ class SignInController extends AbstractController
      *
      * @param ValidatorInterface $validator
      * @param SerializerInterface $serializer
-     * @param SignInHandler $handler
+     * @param CredentialsCheckerHandler $handler
+     * @param UserRepository $userRepository
+     * @param AuthTokensProvider $tokensProvider
      * @param Request $request
      * @return JsonResponse
      */
     public function index(
         ValidatorInterface $validator,
         SerializerInterface $serializer,
-        SignInHandler $handler,
+        CredentialsCheckerHandler $handler,
+        UserRepository $userRepository,
+        AuthTokensProvider $tokensProvider,
         Request $request
     ) {
-        /** @var SignInCommand $command */
-        $command = $serializer->deserialize($request->getContent(), SignInCommand::class, 'json');
-        $errors = $validator->validate($command);
-
-        if (count($errors) > 0) {
+        /** @var CredentialsCheckerCommand $command */
+        $command = $serializer->deserialize($request->getContent(), CredentialsCheckerCommand::class, 'json');
+        if (count($errors = $validator->validate($command)) > 0) {
             return $this->json(['errors' => (new ValidationErrors($errors))->toArray()], 422);
         }
+        $handler->handle($command);
+        $user = $userRepository->getByEmail(Email::createFromString($command->email));
 
-        $token = $handler->handle($command);
-
-        return $this->json(['access_token' => $token], 200);
+        return $this->json([
+            'access_token' => $tokensProvider->createAccessTokenFor($user),
+            'refresh_token' => $tokensProvider->createRefreshTokenFor($user)
+        ], 200);
     }
-
 }

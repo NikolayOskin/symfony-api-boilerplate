@@ -6,7 +6,7 @@ namespace App\Model\User\UseCase\SignIn;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SignInCommand
+class CredentialsCheckerCommand
 {
     /**
      * @Assert\NotBlank
