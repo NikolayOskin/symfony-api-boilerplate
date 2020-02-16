@@ -17,3 +17,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Model/User/Entity'
                 prefix: 'App'
                 alias: User
+            RefreshToken:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Model/Auth/Entity'
+                prefix: 'App/Model/Auth/Entity'
+                alias: RefreshToken
