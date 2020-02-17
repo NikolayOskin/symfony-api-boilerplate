@@ -151,4 +151,10 @@ class User implements UserInterface
     {
         return $this->resetPasswordToken;
     }
+
+    public function setNewPassword(string $passwordHash)
+    {
+        $this->passwordHash = $passwordHash;
+        $this->resetPasswordToken = null;
+    }
 }

@@ -43,7 +43,6 @@ class ResetPasswordHandler
         }
         $user->setResetPasswordToken(new ResetPasswordToken());
 
-        $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         $this->bus->dispatch(new ResetPasswordEmailNotification($user));

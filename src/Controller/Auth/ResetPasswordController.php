@@ -52,7 +52,6 @@ class ResetPasswordController extends AbstractController
         $handler->handle($command);
 
         return $this->json(['success' => 'Confirmation email is sent'], 200);
-
     }
 
     /**
@@ -73,6 +72,6 @@ class ResetPasswordController extends AbstractController
 
         $handler->handle($command);
 
-        return $this->json(['success' => 'Password is changed'], 200);
+        return $this->json(['success' => 'Password has been changed'], 200);
     }
 }
