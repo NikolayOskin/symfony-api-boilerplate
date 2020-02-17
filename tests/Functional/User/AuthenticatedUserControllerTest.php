@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional\Auth;
+namespace App\Tests\Functional\User;
 
 use App\Infrastructure\Model\Auth\AccessTokenRepository;
 use App\Model\User\Entity\User;
 use App\Tests\Functional\ApiTestCase;
 
-class AuthenticatedUserTest extends ApiTestCase
+class AuthenticatedUserControllerTest extends ApiTestCase
 {
     private const URI = '/api/auth/me';
 
