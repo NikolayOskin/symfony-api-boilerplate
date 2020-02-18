@@ -17,4 +17,8 @@ RUN set -xe \
     && rm -rf /tmp/* \
     && apk del  .phpize-deps
 
+# symfony console alias
+RUN apk add --no-cache --upgrade bash
+RUN echo 'alias c="php bin/console"' >> ~/.bashrc
+
 WORKDIR /var/www
