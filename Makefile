@@ -3,6 +3,7 @@ down: docker-down
 restart: down up
 init: docker-down-clear docker-pull docker-build up init-db
 test: run-tests
+coverage: run-tests-coverage
 unit-tests: run-tests-unit
 init-db: dropdb createdb migrate
 
@@ -36,3 +37,5 @@ run-tests:
 
 run-tests-unit:
 	docker-compose run --rm php-fpm php bin/phpunit --testsuite=unit
+run-tests-coverage:
+	docker-compose run --rm php-fpm php bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage
