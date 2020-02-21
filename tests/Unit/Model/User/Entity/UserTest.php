@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Model\User\Entity;
 
 use App\Model\User\Entity\ConfirmToken;
 use App\Model\User\Entity\Email;
+use App\Model\User\Entity\ResetPasswordToken;
 use App\Model\User\Entity\User;
 use App\Model\User\Entity\UserId;
 use PHPUnit\Framework\TestCase;
@@ -63,5 +64,22 @@ class UserTest extends TestCase
         );
         $user->confirmSignUp('1234', new \DateTimeImmutable());
 
+    }
+
+    public function test_set_new_password()
+    {
+        $passwordBefore = 'passBefore';
+        $user = new User(
+            UserId::create(),
+            Email::createFromString('some@gmail.com'),
+            $passwordBefore,
+            $token = new ConfirmToken('12345', new \DateTimeImmutable('+1 day'))
+        );
+        $user->setResetPasswordToken(new ResetPasswordToken());
+
+        $user->setNewPassword('newPass');
+
+        self::assertNotEquals($user->getPasswordHash(), $passwordBefore);
+        self::assertNull($user->getResetPasswordToken());
     }
 }
