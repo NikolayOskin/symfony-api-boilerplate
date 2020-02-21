@@ -1,24 +1,23 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.4-fpm
 
-RUN set -ex \
-    && apk update && apk add unzip \
-	&& apk --no-cache add postgresql-libs postgresql-dev \
-	&& docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-	&& docker-php-ext-install pgsql pdo_pgsql \
-	&& apk del postgresql-dev
+RUN pecl install -o -f redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
 
-RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/bin --filename=composer --quiet
+RUN apt-get update && apt-get install -y libpq-dev unzip \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo_pgsql \
+    && pecl install xdebug-2.9.0 \
+    && docker-php-ext-enable xdebug
 
-RUN set -xe \
-    && apk add --no-cache --update --virtual .phpize-deps $PHPIZE_DEPS \
-    && pecl install -o -f redis  \
-    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
-    && rm -rf /usr/share/php \
-    && rm -rf /tmp/* \
-    && apk del  .phpize-deps
+COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # symfony console alias
-RUN apk add --no-cache --upgrade bash
+#RUN apk add --no-cache --upgrade bash
 RUN echo 'alias c="php bin/console"' >> ~/.bashrc
 
 WORKDIR /var/www
