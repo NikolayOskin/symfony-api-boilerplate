@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y libpq-dev unzip \
 
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet \
+    && composer global require hirak/prestissimo --no-plugins --no-scripts
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
