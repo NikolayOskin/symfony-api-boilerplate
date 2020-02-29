@@ -18,7 +18,7 @@ class ResetPasswordToken
         $this->token = (string) rand(1000000000, 999999999999);
     }
 
-    public function getToken() : string
+    public function getToken() : ?string
     {
         return $this->token;
     }
